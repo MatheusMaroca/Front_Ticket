@@ -1,18 +1,35 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map} from 'rxjs/operators'
+import { catchError, map} from 'rxjs/operators'
 import { Cidade } from './cidade.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CidadeServiceService {
+  header = {
+    Accept: 'application/json'
+  };
+  requestOptions = {
+    headers: new HttpHeaders(this.header),
+  }
 
   constructor(private http: HttpClient) { }
+  
 
-  saveCidade(cidade: Cidade) {
-    return this.http.post("http://localhost:58644/api/cidade?search=", cidade).toPromise()
+  saveCidade(cidade: Cidade): Observable<Cidade> {
+    console.log('ososdnfosndof')
+    debugger
+    return this.http
+      .post<Cidade>("/api/cidade",cidade, this.requestOptions)
+      .pipe(map((res: Cidade) => {
+        console.log(res)
+        return res;
+      }),
+      catchError( err => {
+        throw 'error: ' + err
+      }));
   }
 
   getCidade(): Observable<Cidade[]> {

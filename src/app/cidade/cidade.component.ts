@@ -19,13 +19,10 @@ export class CidadeComponent implements OnInit {
   }
 
   salvarCidade() {
-    this.cidadeService.saveCidade(this.cidade)
-      .then(res => {
-        //sucesso
-      })
-      .catch(res => {
-        // ja era
-      })
+    console.log(this.cidade);
+    this.cidadeService.saveCidade(this.cidade).subscribe((resp: Cidade) => {
+      console.log(resp);
+    });
   }
 
   setCidadeList() {
